@@ -126,6 +126,33 @@ def str_table(rows, columns, orderby):
     return result
 
 
+def test_str_table():
+    rows = [
+        {
+            "a": 1,
+            "b": "beeblebrox",
+            "c": "count",
+        },
+        {
+            "a": 2,
+            "b": "butter",
+            "c": "confusion",
+        },
+    ]
+
+    columns = ["a", "b", "c"]
+
+    result = str_table(rows, columns, None)
+
+    expected = [
+        "a b          c         ",
+        "1 beeblebrox count     ",
+        "2 butter     confusion ",
+    ]
+
+    assert result == expected
+
+
 class Zone:
     def __init__(self, name):
         self.tz = pytz.timezone(name)
@@ -217,6 +244,69 @@ class Zone:
             r += [self._str_hour(i)]
         s = ' '.join(r)
         return s
+
+
+def test_zone_simple():
+    zone = Zone("Australia/Melbourne")
+    assert zone.name == "Australia/Melbourne"
+    zone.name = "Melbourne"
+    assert zone.name == "Melbourne"
+
+    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+    assert zone.tzname() == "AEDT"
+
+
+def test_zone_offset():
+    home = Zone("Europe/London")
+    zone = Zone("Australia/Melbourne")
+
+    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+
+    zone.home = home
+    assert zone.offset() == "+11"
+
+    zone.home = zone
+    assert zone.offset() == "\u2302".rjust(3)
+
+    # TODO: non integer offset zones
+
+
+def test_zone_time():
+    home = Zone("Europe/London")
+    zone = Zone("Australia/Melbourne")
+
+    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+
+    zone.home = home
+    assert zone.time() == "16:06"
+
+    # TODO: times that have both positive and negative days vs home
+
+
+def test_zone_hour():
+    home = Zone("Europe/London")
+    zone = Zone("Australia/Melbourne")
+
+    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+    zone.colours = {
+        "hours": {
+            0: "test_code1",
+            16: "test_code2",
+            17: "test_code3",
+        },
+        "codes": {
+            "test_code1": "A",
+            "test_code2": "B",
+            "test_code3": "C",
+            "hilight": "h",
+            "normal": "n",
+        },
+    }
+
+    zone.home = home
+    assert zone._str_hour(5) == "Bh16n"
+    assert zone._str_hour(6) == "C17n"
+    assert zone._str_hour(13) == "A  n"
 
 
 def main():
