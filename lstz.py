@@ -162,6 +162,7 @@ class Zone:
         self.reference = None
         self.home = None
         self.colours = None
+        self.hours_rotate = 0
 
     def tzname(self):
         return self.tz.tzname(self.reference)
@@ -241,8 +242,13 @@ class Zone:
         return hour_colour + hilight + hour_str + codes["normal"]
 
     def hours(self):
+        hours = list(range(24))
+        hours_rotate = self.hours_rotate % 24
+        prefix = hours[:hours_rotate]
+        hours = hours[hours_rotate:] + prefix
+
         r = []
-        for i in range(24):
+        for i in hours:
             r += [self._str_hour(i)]
         s = ' '.join(r)
         return s
@@ -341,8 +347,18 @@ def main():
         db["zones"][name] = zone
 
     home = db["zones"][db["home"]]
+
+    hours_rotate = 0
+    width = os.get_terminal_size().columns
+    # some guestimates about widths
+    # Assumes max name len of 9
+    if width < 100:
+        middle_column = ((width - 27) //3) //2
+        hours_rotate = dt.hour - middle_column
+
     for zone in db["zones"].values():
         zone.home = home
+        zone.hours_rotate = hours_rotate
 
     lines = str_table(db["zones"].values(), [
         "offset",
