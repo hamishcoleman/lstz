@@ -192,11 +192,13 @@ class Zone:
         offset = int(offset)
         return f"~{offset:+d}".rjust(3)
 
+    def dt(self):
+        return self.reference.astimezone(self.tz)
+
     def time(self):
-        dt = self.reference
-        self_time = dt.astimezone(self.tz)
+        self_time = self.dt()
         self_date = self_time.date()
-        home_date = dt.astimezone(self.home.tz).date()
+        home_date = self.home.dt().date()
         offset = (self_date - home_date).days
 
         if offset == 0:
@@ -210,7 +212,7 @@ class Zone:
         """Calculate an hour of the day in the reference day and then represent
         that same time but in the self zone"""
 
-        midnight = self.reference.astimezone(self.home.tz).replace(
+        midnight = self.home.dt().replace(
             hour=0,
             minute=0,
             second=0,
@@ -221,7 +223,7 @@ class Zone:
         return hour_dt.astimezone(self.tz)
 
     def _str_hour(self, hour):
-        hour_now = self.reference.astimezone(self.home.tz).hour
+        hour_now = self.home.dt().hour
         hour_nr = self._hour_dt(hour).hour
 
         hours = self.colours["hours"]
@@ -284,6 +286,7 @@ def test_zone_time():
     zone = Zone("Australia/Melbourne")
 
     zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+    home.reference = zone.reference
 
     zone.home = home
     assert zone.time() == "16:06"
@@ -296,6 +299,8 @@ def test_zone_hour():
     zone = Zone("Australia/Melbourne")
 
     zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
+    home.reference = zone.reference
+
     zone.colours = {
         "hours": {
             0: "test_code1",
