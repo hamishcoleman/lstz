@@ -56,6 +56,8 @@ colours:
         sleep: "\\e[0;2m"   # dim
         normal: "\\e[0m"
         hilight: "\\e[7m"   # reverse
+        set_awm: "\\e[?7h"
+        clr_awm: "\\e[?7l"
 """)
 
 
@@ -350,9 +352,11 @@ def main():
         "hours",
     ], None)
 
+    print(db["colours"]["codes"]["clr_awm"], end="")
     # print them
     for line in lines:
         print(line)
+    print(db["colours"]["codes"]["set_awm"], end="")
 
 
 if __name__ == "__main__":
