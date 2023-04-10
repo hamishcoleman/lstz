@@ -359,7 +359,7 @@ def main():
     # Assumes max name len of 9
     if width < 100:
         middle_column = ((width - 27) //3) //2
-        hours_rotate = dt.hour - middle_column
+        hours_rotate = home.dt().hour - middle_column
 
     for zone in db["zones"].values():
         zone.home = home
