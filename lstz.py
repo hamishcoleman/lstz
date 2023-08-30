@@ -2,6 +2,8 @@
 #
 # List timezones
 #
+# :Install:*:dest: ~/bin/lstz
+#
 # TODO: install packages:
 #       python3-tz
 #
