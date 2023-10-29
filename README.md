@@ -17,6 +17,10 @@ zones:
 
 ## Example Output
 
+(Due to technical limitations with github markdown processing, the three
+different shades of foreground colour and the current hour highlight with a
+background colour are probably not visible to you in this example)
+
 <pre>
 $ ./lstz.py
 
