@@ -356,7 +356,14 @@ def main():
     home = db["zones"][db["home"]]
 
     hours_rotate = 0
-    width = os.get_terminal_size().columns
+
+    try:
+        width = os.get_terminal_size().columns
+    except OSError:
+        # just "Errno 25 Inappropriate ioctl for device"
+        # TODO - perhaps could have a cmdline opt to set the width
+        width = 80
+
     # some guestimates about widths
     # Assumes max name len of 9
     if width < 100:
