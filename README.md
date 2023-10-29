@@ -17,9 +17,9 @@ zones:
 
 ## Example Output
 
-(Due to technical limitations with github markdown processing, the three
-different shades of foreground colour and the current hour highlight with a
-background colour are probably not visible to you in this example)
+(Due to technical limitations with github markdown processing, this example
+doesnt show the dim colours for "sleepy" times and the current hour is shown
+with square brackets instead of a reverse video highlight)
 
 <pre>
 $ ./lstz.py
