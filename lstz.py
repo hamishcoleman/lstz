@@ -2,10 +2,11 @@
 #
 # List timezones
 #
-# :Install:*:dest: ~/bin/lstz
-#
-# TODO: install packages:
-#       python3-tz
+# :dotsctl:
+#   destdir: ~/bin/
+#   dpkg:
+#     - python3-tz
+# ...
 #
 
 import collections
