@@ -288,8 +288,11 @@ def test_zone_time():
     home = Zone("Europe/London")
     zone = Zone("Australia/Melbourne")
 
-    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
-    home.reference = zone.reference
+    dt = datetime.datetime.fromtimestamp(1675487167)
+    # 2023-02-04T05:06:07Z
+
+    zone.reference = dt
+    home.reference = dt
 
     zone.home = home
     assert zone.time() == "16:06"
@@ -301,8 +304,11 @@ def test_zone_hour():
     home = Zone("Europe/London")
     zone = Zone("Australia/Melbourne")
 
-    zone.reference = datetime.datetime(2023, 2, 4, 5, 6, 7)
-    home.reference = zone.reference
+    dt = datetime.datetime.fromtimestamp(1675487167)
+    # 2023-02-04T05:06:07Z
+
+    zone.reference = dt
+    home.reference = dt
 
     zone.colours = {
         "hours": {
