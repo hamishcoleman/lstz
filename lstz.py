@@ -21,10 +21,10 @@ default_db = yaml.safe_load("""---
 home: Australia/Melbourne
 
 zones:
-    Australia/Melbourne: Melbourne
-    Hongkong: HongKong
-    Europe/London: London
-    America/New_York: New York
+    Melbourne: Australia/Melbourne
+    HongKong: Hongkong
+    London: Europe/London
+    New York: America/New_York
 
 colours:
     hours:
@@ -350,17 +350,17 @@ def main():
     dt = datetime.datetime.now()
 
     # create the objects
-    for name, this in db["zones"].items():
-        zone = Zone(name)
+    for label, zonename in db["zones"].items():
+        zone = Zone(zonename)
         zone.reference = dt
         zone.colours = db["colours"]
 
-        if isinstance(this, str):
-            zone.name = this
+        zone.name = str(label)
 
-        db["zones"][name] = zone
+        db["zones"][label] = zone
 
-    home = db["zones"][db["home"]]
+    home = Zone(db["home"])
+    home.reference = dt
 
     hours_rotate = 0
 
