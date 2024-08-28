@@ -2,3 +2,5 @@
 # Files created during unit tests
 # As this is a python project, it creates the cache
 /__pycache__/
+/.coverage
+/htmlcov/
