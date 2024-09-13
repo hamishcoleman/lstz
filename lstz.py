@@ -22,7 +22,7 @@ home: Australia/Melbourne
 
 zones:
     Melbourne: Australia/Melbourne
-    HongKong: Hongkong
+    HongKong: Asia/Hong_Kong
     London: Europe/London
     New York: America/New_York
 
