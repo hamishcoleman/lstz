@@ -14,7 +14,7 @@ all:
 	@echo Pure Python package - nothing to build
 
 build-dep:
-	apt-get install \
+	sudo apt-get install \
             python3-pytest \
             python3-tz \
 
