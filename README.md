@@ -10,9 +10,10 @@ E.G:
 home: Australia/Melbourne
 
 zones:
-    Australia/Melbourne: Melbourne
-    Hongkong: HongKong
-    Europe/London: London
+    Melbourne: Australia/Melbourne
+    John: America/New_York
+    HongKong: Hongkong
+    London: Europe/London
 ```
 
 ## Example Output
