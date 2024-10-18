@@ -374,7 +374,7 @@ def main():
     # some guestimates about widths
     # Assumes max name len of 9
     if width < 100:
-        middle_column = ((width - 27) //3) //2
+        middle_column = ((width - 27) // 3) // 2
         hours_rotate = home.dt().hour - middle_column
 
     for zone in db["zones"].values():
