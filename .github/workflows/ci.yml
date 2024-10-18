@@ -59,7 +59,7 @@ jobs:
           mv ../*.deb ./
 
       - name: Upload dpkg
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages-dpkg
           path: "*.deb"
