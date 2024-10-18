@@ -1,0 +1,8 @@
+
+# Files generated during the dpkg build process
+.debhelper/
+changelog
+debhelper-build-stamp
+files
+lstz/
+lstz.substvars

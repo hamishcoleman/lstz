@@ -1,0 +1,17 @@
+Source: lstz
+Section: utils
+Priority: optional
+Maintainer: Hamish Coleman <hamish@zot.org>
+Standards-Version: 4.6.0
+Build-Depends:
+ dh-python,
+ python3-pytest,
+ python3-tz,
+
+Package: lstz
+Architecture: all
+Depends:
+ ${python3:Depends},
+Description: Show the relationship of timezones as a text chart
+ Configurable for multiple timezones, this will output a display showing the
+ time and offset for each timezone.
