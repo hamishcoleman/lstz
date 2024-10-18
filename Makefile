@@ -2,6 +2,7 @@
 NAME := lstz
 DESTDIR ?= installdir
 INSTALLDIR := $(DESTDIR)/usr/bin
+MANDIR := $(DESTDIR)/usr/share/man/man1
 
 describe := $(shell git describe --dirty)
 tarfile := $(NAME)-$(describe).tar.gz
@@ -20,6 +21,8 @@ build-dep:
 install:
 	mkdir -p $(INSTALLDIR)
 	install -p lstz.py $(INSTALLDIR)/lstz
+	mkdir -p $(MANDIR)
+	install -p lstz.1 $(MANDIR)/lstz.1
 
 tar:    $(tarfile)
 

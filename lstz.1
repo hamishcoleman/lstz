@@ -1,0 +1,45 @@
+.TH lstz 1 "2024-10-19" "lstz" " "
+.SH NAME
+lstz \- List Timezones
+.SH SYNOPSIS
+.B lstz
+.br
+.SH DESCRIPTION
+Show the relationship of timezones as a text chart
+
+Configurable for multiple timezones, outputing a display showing the
+time and offset for each timezone.
+
+.SH CONFIG
+
+Has a built-in default set of timezones, or can be configured using
+a file:
+
+.RS
+~/.config/lstz/tz.yml
+.RE
+
+This file is a YAML file and contains two main settings:
+
+.nf
+.RS
+---
+home: Australia/Melbourne
+
+zones:
+  name: Australia/Melbourne
+  name2: Europe/London
+  name3: Etc/GMT-10
+.RE
+.fi
+
+The home setting defines which timezone is used to calculate the relative
+hours offset (and any line listed in the home timezone will show a home char)
+
+The zones setting defines a set of the display name and the timezone to add
+to the output.
+
+.SH AUTHORS
+.TP
+Hamish Coleman
+hamish (at) zot.org
