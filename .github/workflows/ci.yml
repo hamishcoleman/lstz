@@ -1,0 +1,105 @@
+---
+name: CI
+
+on:
+  pull_request:
+  release:
+    types:
+      - published
+      - created
+      - edited
+  workflow_dispatch:
+
+jobs:
+  smoketest:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fix Checkout
+        run: |
+          git fetch --force --tags
+
+      - name: Install essential
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential autoconf
+          make build-dep
+
+      - name: Run tests
+        run: |
+          make lint test
+
+  package_dpkg:
+    name: Package for Debian/Ubuntu
+    needs:
+      - smoketest
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix Checkout
+        run: |
+          git fetch --force --tags
+
+      - name: Install packages needed for build
+        run: |
+          sudo apt-get update
+          sudo apt-get install devscripts equivs
+          sudo mk-build-deps -i
+
+      - name: Build
+        run: |
+          make dpkg
+          mv ../*.deb ./
+
+      - name: Upload dpkg
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages-dpkg
+          path: "*.deb"
+
+  upload_release:
+    name: Upload Release Assets
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - package_dpkg
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix Checkout
+        run: |
+          git fetch --force --tags
+
+      - name: Get Tag Type
+        id: get_tagtype
+        run: |
+          TYPE=$(git cat-file -t $GITHUB_REF)
+          echo "::set-output name=TAGTYPE::$TYPE"
+          echo ==========
+          echo REF=$GITHUB_REF
+          echo TAGTYPE=$TYPE
+
+      - name: Fetch all Artifacts
+        if: steps.get_tagtype.outputs.TAGTYPE == 'tag'
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Upload Assets to Release
+        if: steps.get_tagtype.outputs.TAGTYPE == 'tag'
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true
+          files: |
+            artifacts/packages-dpkg/*.deb
