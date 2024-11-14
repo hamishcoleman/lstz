@@ -17,6 +17,7 @@ build-dep:
 	sudo apt-get install \
             flake8 \
             python3-pytest \
+            python3-pytest-cov \
             python3-tz \
 
 install:
